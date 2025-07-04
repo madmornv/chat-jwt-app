@@ -18,11 +18,23 @@ fetch('/verify', {
 
     socket.on('mensaje', (data) => {
       const chat = document.getElementById('chat');
-      chat.innerHTML += `<p><strong>${data.user}:</strong> ${data.msg}</p>`;
+      const burbuja = document.createElement('div');
+      burbuja.className = 'burbuja';
+      const nombre = document.createElement('span');
+      nombre.className = 'nombre';
+      nombre.textContent = data.user;
+      const mensaje = document.createElement('span');
+      mensaje.className = 'mensaje';
+      mensaje.textContent = data.msg;
+      burbuja.appendChild(nombre);
+      burbuja.appendChild(mensaje);
+      chat.appendChild(burbuja);
+      chat.scrollTop = chat.scrollHeight;
     });
 
     window.enviar = () => {
       const msg = document.getElementById('mensaje').value;
+      if (msg.trim() === '') return;
       socket.emit('mensaje', msg);
       document.getElementById('mensaje').value = '';
     };
